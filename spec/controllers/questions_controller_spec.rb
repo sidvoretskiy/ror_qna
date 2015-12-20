@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:user) {create(:user)}
   let(:question) {FactoryGirl.create(:question)}
 
   describe 'GET #index' do
@@ -30,7 +31,12 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "GET #new" do
-    before {get :new}
+
+    before do
+      login(user)
+      get :new
+    end
+
 
     it 'assigns new Question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -43,8 +49,11 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #edit'  do
-    let(:question) {FactoryGirl.create(:question)}
-    before {get :edit, id: question}
+
+    before do
+      login(user)
+      get :edit, id: question
+    end
 
     it 'load all questions' do
       expect(assigns(:question)).to eq question
@@ -55,6 +64,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "POST #create" do
+    before {login(user)}
     context 'valid' do
       it 'saves new question in DB' do
         expect { post :create, question: FactoryGirl.attributes_for(:question) }.to change(Question, :count).by(1)
@@ -83,6 +93,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "PATH #update" do
+    before {login(user)}
     context 'valid' do
       before {patch :update, id: question, question: {title: 'new title', body: 'new body'}}
 
@@ -115,14 +126,17 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before {question}
+    before do
+      login(user)
+      question
+    end
 
     it 'deletes question from DB' do
       expect { delete :destroy, id: question}.to change(Question, :count).by(-1)
     end
 
     it 'redirect to index'do
-    delete :destroy, id: question
+      delete :destroy, id: question
     end
 
 

@@ -4,6 +4,13 @@ feature 'Create question', %q{
         In order to get answer from community
         As an authenticated user
         I want to be able to ask question} do
+
+  # background do
+  #   выполняется до теста
+  # end
+
+
+
   given!(:user) {create(:user)}
   scenario  'Authentificated user create question' do
 

@@ -1,2 +1,10 @@
 <h1><%= @question.title %> </h1>
 <p><%= @question.body %> </p>
+<%= render @question.answers %>
+
+
+<%= form_for @question do |f| %>
+    <%=   f.label :body, 'Your answer' %>
+    <%=   f.text_field :body %>
+    <%=   f.submit 'Send answer' %>
+<% end  %>

@@ -6,10 +6,7 @@ feature 'Any user can read questions' do
 
   scenario 'User singed in and read questions' do
 
-    visit new_user_session_path
     login(user)
-    click_on 'Log in'
-
     visit questions_path
     questions.each do |question|
       expect(page).to have_content question.title

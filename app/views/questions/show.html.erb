@@ -1,9 +1,14 @@
 <h1><%= @question.title %> </h1>
 <h2><%= @question.body %> </h2>
-<%= render @question.answers %>
 
 
-<%= form_for ([@question, @question.answers.new]) do |f| %>
+<p class="answers-count">Answers count:<%= @question.answers.count %></p>
+<div class="answers">
+  <%= render @question.answers %>
+</div>
+
+
+<%= form_for [@question, @question.answers.new], remote: true do |f| %>
     <%=   f.label :body, 'Your answer' %>
     <%=   f.text_field :body %>
     <%=   f.submit 'Send answer' %>

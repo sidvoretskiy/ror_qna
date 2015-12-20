@@ -133,15 +133,28 @@ RSpec.describe QuestionsController, type: :controller do
       question
     end
 
-    it 'deletes question from DB' do
-      expect { delete :destroy, id: question}.to change(Question, :count).by(-1)
+    context 'author deletes his own queston' do
+      let!(:question){create(:question, user: user)}
+
+      it 'deletes question from DB' do
+        expect { delete :destroy, id: question}.to change(Question, :count).by(-1)
+      end
+
+      it 'redirect to index'do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+
     end
 
-    it 'redirect to index'do
-      delete :destroy, id: question
+    context 'non-author can not delete question' do
+      before {question}
+
+      it 'does not delete question from DB' do
+        expect { delete :destroy, id: question}.to_not change(Question, :count)
+      end
+
     end
-
-
 
   end
 

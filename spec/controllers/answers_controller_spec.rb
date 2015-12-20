@@ -6,7 +6,7 @@ RSpec.describe AnswersController, type: :controller do
 
 
   describe "GET #new" do
-    before {get :new, question_id: question.id}
+    before {get :new, question_id: question}
 
     it 'assigns new Answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -28,20 +28,20 @@ RSpec.describe AnswersController, type: :controller do
     context 'valid' do
 
       it 'saves new answer' do
-        expect { post :create, question_id: question.id, answer: FactoryGirl.attributes_for(:answer)}.to change(Answer, :count).by(1)
+        expect { post :create, question_id: question, answer: FactoryGirl.attributes_for(:answer)}.to change(Answer, :count).by(1)
       end
 
       it 'answer assign to question' do
 
-        post :create, question_id: question.id, answer: FactoryGirl.attributes_for(:answer)
+        post :create, question_id: question, answer: FactoryGirl.attributes_for(:answer)
         question.reload
         # expect(answer.question).to eq question
-        expect { post :create, question_id: question.id, answer: FactoryGirl.attributes_for(:invalid_answer)}.to change(question.answers, :count).by(1)
+        expect { post :create, question_id: question, answer: FactoryGirl.attributes_for(:invalid_answer)}.to change(question.answers, :count).by(1)
         # expect(response).to change(question.answers, :count).by(1)
       end
 
       it 'redirect to question' do
-        post :create, question_id: question.id, answer: FactoryGirl.attributes_for(:answer)
+        post :create, question_id: question, answer: FactoryGirl.attributes_for(:answer)
         expect(response).to redirect_to question_path(assigns(:question))
       end
 
@@ -50,11 +50,11 @@ RSpec.describe AnswersController, type: :controller do
     context 'invalid' do
 
       it 'does not saves new answer' do
-        expect { post :create, question_id: question.id, answer: FactoryGirl.attributes_for(:invalid_answer)}.to change(Answer, :count).by(0)
+        expect { post :create, question_id: question, answer: FactoryGirl.attributes_for(:invalid_answer)}.to change(Answer, :count).by(0)
       end
 
       it 'redirect to new answer' do
-        post :create, question_id: question.id, answer: FactoryGirl.attributes_for(:invalid_answer)
+        post :create, question_id: question, answer: FactoryGirl.attributes_for(:invalid_answer)
         expect(response).to render_template :new
       end
 

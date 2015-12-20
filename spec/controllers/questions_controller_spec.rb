@@ -4,11 +4,12 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user) {create(:user)}
   let(:question) {FactoryGirl.create(:question)}
 
+
   describe 'GET #index' do
+    let!(:questions) {FactoryGirl.create_list(:question, 3)}
     before {get :index}
 
     it 'load all questions' do
-      questions = FactoryGirl.create_list(:question, 3)
       # get :index
       expect(assigns(:questions)).to eq questions
     end
@@ -112,9 +113,10 @@ RSpec.describe QuestionsController, type: :controller do
     context 'invalid' do
       before {patch :update, id: question, question: {title: nil, body: nil}}
       it 'does not change question attributes' do
+        question_old = question
         question.reload
-        expect(question.title).to eq 'My question'
-        expect(question.body).to eq 'question body'
+        expect(question.title).to eq question_old.title
+        expect(question.body).to eq question_old.body
       end
 
       it 'renders edit template' do

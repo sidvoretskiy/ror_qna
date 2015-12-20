@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Any user can read questions' do
-  questions = FactoryGirl.create_list(:question, 3)
+  given!(:questions) {create_list(:question, 3)}
   given!(:user) {create(:user)}
 
   scenario 'User singed in and read questions' do

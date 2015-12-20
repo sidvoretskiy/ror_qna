@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:user) {create(:user)}
   let(:question) {FactoryGirl.create(:question)}
   let(:answer) {FactoryGirl.create(:answer)}
 
 
   describe "GET #new" do
+    before {login(user)}
     before {get :new, question_id: question}
 
     it 'assigns new Answer' do
@@ -25,6 +27,7 @@ RSpec.describe AnswersController, type: :controller do
 
 
   describe 'POST #create' do
+    before {login(user)}
     context 'valid' do
 
       it 'saves new answer' do
@@ -34,9 +37,9 @@ RSpec.describe AnswersController, type: :controller do
       it 'answer assign to question' do
 
         post :create, question_id: question, answer: FactoryGirl.attributes_for(:answer)
-        question.reload
+        # question.reload
         # expect(answer.question).to eq question
-        expect { post :create, question_id: question, answer: FactoryGirl.attributes_for(:invalid_answer)}.to change(question.answers, :count).by(1)
+        expect { post :create, question_id: question, answer: FactoryGirl.attributes_for(:answer)}.to change(question.answers, :count).by(1)
         # expect(response).to change(question.answers, :count).by(1)
       end
 

@@ -1,9 +1,9 @@
 <h1><%= @question.title %> </h1>
-<p><%= @question.body %> </p>
+<h2><%= @question.body %> </h2>
 <%= render @question.answers %>
 
 
-<%= form_for @question do |f| %>
+<%= form_for ([@question, @question.answers.new]) do |f| %>
     <%=   f.label :body, 'Your answer' %>
     <%=   f.text_field :body %>
     <%=   f.submit 'Send answer' %>

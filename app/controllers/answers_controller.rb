@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
+
   def new
     @answer = Answer.new
   end
@@ -10,7 +12,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully created'
     else
-      render @question, notice: 'Your answer not created'
+      render :new, notice: 'Your answer not created'
     end
 
   end

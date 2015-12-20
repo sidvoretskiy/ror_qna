@@ -10,7 +10,7 @@ feature 'Create question', %q{
   # end
 
 
-
+  
   given!(:user) {create(:user)}
   scenario  'Authentificated user create question' do
 

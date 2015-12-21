@@ -78,4 +78,69 @@ RSpec.describe AnswersController, type: :controller do
 
   end
 
+  describe 'DELETE #destroy' do
+    before do
+      login(user)
+      question
+    end
+
+    context 'author deletes his own answer' do
+      let!(:question){create(:question, user: user)}
+      let!(:answer){create(:answer, user: user, question: question)}
+
+      it 'deletes answer from DB' do
+        expect { delete :destroy, id: answer}.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirect to question'do
+        delete :destroy, id: answer
+        expect(response).to redirect_to question_path(question)
+      end
+
+    end
+
+    context 'non-author can not delete answer' do
+      let!(:answer){create(:answer, user: create(:user), question: question)}
+
+      it 'does not delete answer from DB' do
+        expect { delete :destroy, id: answer}.to_not change(Answer, :count)
+      end
+
+    end
+
+  end
+
+  describe "PATH #update" do
+    before {login(user)}
+    let!(:answer){create(:answer, user: create(:user), question: question)}
+    context 'valid' do
+      before {patch :update, id: answer, answer: {body: 'new body'}}
+
+      it 'changes question' do
+
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'redirects to question' do
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context 'invalid' do
+      before {patch :update, id: answer, answer: {body: nil}}
+      it 'does not change question attributes' do
+        answer_old = answer
+        answer.reload
+        expect(answer.body).to eq answer_old.body
+      end
+
+      it 'renders edit template' do
+        expect(response).to render_template :edit
+      end
+
+    end
+
+  end
+
 end

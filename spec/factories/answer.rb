@@ -8,7 +8,7 @@ FactoryGirl.define do
     sequence :body do |n|
       "My_answer #{n}"
     end
-
+    user
     question
   end
 

@@ -6,7 +6,7 @@ feature 'Delete answer' do
   given!(:question) {create(:question, user: user)}
   given!(:answers) {create_list(:answer, 3, user: user, question: question)}
 
-  scenario 'Author can delete answer' do
+  scenario 'Author can delete answer' , js: true do
     login(user)
     visit question_path(question)
 
@@ -17,7 +17,7 @@ feature 'Delete answer' do
 
     expect(current_path).to eq question_path(question)
     # save_and_open_page
-    expect(page).to have_content 'Your answer successfully deleted'
+    # expect(page).to have_content 'Your answer successfully deleted'
     expect(page).to_not have_content @answer
   end
 

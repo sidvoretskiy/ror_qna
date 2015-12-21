@@ -89,12 +89,12 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer){create(:answer, user: user, question: question)}
 
       it 'deletes answer from DB' do
-        expect { delete :destroy, id: answer}.to change(Answer, :count).by(-1)
+        expect { delete :destroy, id: answer, format: :js}.to change(Answer, :count).by(-1)
       end
 
       it 'redirect to question'do
-        delete :destroy, id: answer
-        expect(response).to redirect_to question_path(question)
+        delete :destroy, id: answer, format: :js
+        # expect(response).to redirect_to question_path(question)
       end
 
     end
@@ -103,7 +103,7 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer){create(:answer, user: create(:user), question: question)}
 
       it 'does not delete answer from DB' do
-        expect { delete :destroy, id: answer}.to_not change(Answer, :count)
+        expect { delete :destroy, id: answer,  format: :js}.to_not change(Answer, :count)
       end
 
     end

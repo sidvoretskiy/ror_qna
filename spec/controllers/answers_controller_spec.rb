@@ -111,12 +111,13 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "PATH #update" do
-    before {login(user)}
-    let!(:answer){create(:answer, user: create(:user), question: question)}
-    context 'valid' do
+
+    let!(:answer){create(:answer, user: user, question: question)}
+    context 'author edit his own answer' do
+      before {login(user)}
       before {patch :update, id: answer, answer: {body: 'new body'}}
 
-      it 'changes question' do
+      it 'changes answer' do
 
         answer.reload
         expect(answer.body).to eq 'new body'
@@ -127,12 +128,12 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    context 'invalid' do
-      before {patch :update, id: answer, answer: {body: nil}}
+    context 'non-author can not edit answer' do
+      before {login(create(:user))}
+      before {patch :update, id: answer, answer: {body: 'edited body'}}
       it 'does not change question attributes' do
-        answer_old = answer
         answer.reload
-        expect(answer.body).to eq answer_old.body
+        expect(answer.body).to_not eq 'edited body'
       end
 
       it 'renders edit template' do

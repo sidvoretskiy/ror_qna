@@ -29,9 +29,13 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question = Question.find(params[:id])
-    if @question.update(question_params)
-      redirect_to @question
+    if current_user.author_of?(@question)
+      @question = Question.find(params[:id])
+      if @question.update(question_params)
+        redirect_to @question, notice: 'Your question successfully saved'
+      else
+        render :edit
+      end
     else
       render :edit
     end

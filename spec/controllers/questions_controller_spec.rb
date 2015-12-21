@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) {create(:user)}
-  let(:question) {FactoryGirl.create(:question)}
+  let(:question) {create(:question, user: user)}
 
 
   describe 'GET #index' do
@@ -94,8 +94,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe "PATH #update" do
-    before {login(user)}
-    context 'valid' do
+
+    context 'author change his own question' do
+      before {login(user)}
       before {patch :update, id: question, question: {title: 'new title', body: 'new body'}}
 
       it 'changes question' do
@@ -110,13 +111,13 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
 
-    context 'invalid' do
-      before {patch :update, id: question, question: {title: nil, body: nil}}
+    context 'non-author can not edit question' do
+      before {login(create(:user))}
+      before {patch :update, id: question, question: {title: 'edited title', body: 'edited body'}}
       it 'does not change question attributes' do
-        question_old = question
         question.reload
-        expect(question.title).to eq question_old.title
-        expect(question.body).to eq question_old.body
+        expect(question.title).to_not eq 'edited title'
+        expect(question.body).to_not eq 'edited body'
       end
 
       it 'renders edit template' do
@@ -148,6 +149,7 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'non-author can not delete question' do
+      before{login(create(:user))}
       before {question}
 
       it 'does not delete question from DB' do

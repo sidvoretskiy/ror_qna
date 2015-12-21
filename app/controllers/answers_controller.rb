@@ -24,8 +24,12 @@ class AnswersController < ApplicationController
 
   def update
     @answer = Answer.find(params[:id])
-    if @answer.update(answer_params)
-      redirect_to @answer.question, notice: 'Your answer successfully changed'
+    if current_user.author_of?(@answer)
+      if @answer.update(answer_params)
+        redirect_to @answer.question, notice: 'Your answer successfully changed'
+      else
+        render :edit
+      end
     else
       render :edit
     end

@@ -1,6 +1,0 @@
-
-<h1><%= link_to question.title, question %></h1>
-<p><%= question.body %></p>
-<% if current_user && current_user.author_of?(question) %>
-<p><%= link_to 'Edit', edit_question_path(question) %></p>
-<% end %>

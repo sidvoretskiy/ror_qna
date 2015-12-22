@@ -1,0 +1,6 @@
+= div_for answer do
+  p = answer.body
+  br
+  - if current_user && current_user.author_of?(answer)
+    p = link_to 'Delete answer',  answer, remote: true, method: :delete, class: 'delete_answer_link', data: { answer_id: answer.id }
+    p = link_to 'Edit answer', edit_answer_path(answer)

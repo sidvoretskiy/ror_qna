@@ -28,4 +28,11 @@ feature 'Authentificated user can write answer for question' do
     expect(current_path).to eq new_user_session_path
   end
 
+  scenario 'User tries to create invalid answer ', js: true do
+    login(user)
+    visit question_path(question)
+    click_on 'Send answer'
+    expect(page).to have_content "Body can't be blank"
+  end
+
 end

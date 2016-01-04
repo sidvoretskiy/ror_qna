@@ -5,19 +5,18 @@ feature 'Edit answer' do
   given!(:question) {create(:question, user: user)}
   given!(:answers) {create_list(:answer, 3, user: user, question: question)}
 
-  scenario 'Author can edit answer' do
+  scenario 'Author can edit answer' , js: true do
     login(user)
     visit question_path(question)
-
     within ('#answer_'+ question.answers.first.id.to_s) do
       @answer = question.answers.first.body
       click_on 'Edit answer'
+      fill_in 'Your answer', with: 'My edited answer'
+      click_on 'Save answer'
     end
-    fill_in 'Your answer', with: 'My edited answer'
-    click_on 'Save answer'
     expect(current_path).to eq question_path(question)
     # save_and_open_page
-    expect(page).to have_content 'Your answer successfully changed'
+    # expect(page).to have_content 'Your answer successfully changed'
     expect(question.answers.first.body).to eq 'My edited answer'
 
   end

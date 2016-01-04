@@ -31,4 +31,11 @@ $(document).ready(function(){
         }).bind('ajax:before',function(){
             $('.answer-errors').html('');
         });
+
+    PrivatePub.subscribe('/questions',function(data,channel) {
+        console.log(data);
+        response = data['response'];
+        question = response.question;
+        $('.questions').append('<div class="question" id="question_' + question.id + '\"><h1><a href=\"/questions/' + question.id + '\">' + question.title + '</a></h1><p>'+ question.title + '</p></div>');
+    });
 });

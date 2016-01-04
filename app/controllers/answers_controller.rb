@@ -21,7 +21,11 @@ class AnswersController < ApplicationController
       if @answer.save
         format.html {redirect_to @question, notice: 'Your answer successfully created'}
         format.js
-        format.json {render json: {answers_count: @question.answers.count, answer: @answer}}
+        format.json do
+          response = {answers_count: @question.answers.count, answer: @answer}
+          PrivatePub.publish_to "/questions/#{@answer.question_id}/answers", response: response
+          render json: response
+        end
       else
         format.html {render :new, notice: 'Your answer not created'}
         format.js

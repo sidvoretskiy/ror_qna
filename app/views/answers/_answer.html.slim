@@ -1,13 +1,14 @@
 - hidden = true
 = div_for answer do
-  p = answer.body
-br
-- if current_user && current_user.author_of?(answer)
-  = form_for (answer), html: {style: "display: #{hidden ? 'none' : 'block'}"}, remote: true, format: :json do |f|
-    div class="field"
-      = f.text_area :body
-    div class="actions"
-      = f.submit ('Сохранить')
+  div class="title"
+    p = answer.body
+  br
+  - if current_user && current_user.author_of?(answer)
+    = form_for (answer), html: {style: "display: #{hidden ? 'none' : 'block'}"}, remote: true, format: :json do |f|
+      div class="field"
+        = f.text_area :body
+      div class="actions"
+        = f.submit ('Save answer')
 
-  p = link_to 'Delete answer',  answer, remote: true, method: :delete, class: 'delete_answer_link', data: { answer_id: answer.id }
-  p = link_to 'Edit answer', '#',class: 'edit_answer_link', data: { answer_id: answer.id }
+    p = link_to 'Delete answer',  answer, remote: true, method: :delete, class: 'delete_answer_link', data: { answer_id: answer.id }
+    p = link_to 'Edit answer', '#',class: 'edit_answer_link', data: { answer_id: answer.id }

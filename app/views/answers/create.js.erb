@@ -4,7 +4,11 @@ $('.answer-errors').html('');
         $('.answer-errors').append('<%= j message %>');
     <% end %>
 <% else %>
+//    $('.answers').append('<%= j render @answer %>');
+//    $('.answers-count').html('Answers count: ' + '<%= @question.answers.count %>');
+    $('input#answer_body').val('');
+<% publish_to "/questions/#{@answer.question_id}/answers" do %>
     $('.answers').append('<%= j render @answer %>');
     $('.answers-count').html('Answers count: ' + '<%= @question.answers.count %>');
-    $('#answer_body').val('');
+    <% end %>
 <% end %>

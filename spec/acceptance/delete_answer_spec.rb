@@ -9,7 +9,6 @@ feature 'Delete answer' do
   scenario 'Author can delete answer' , js: true do
     login(user)
     visit question_path(question)
-
     within ('#answer_'+ question.answers.first.id.to_s) do
       @answer = question.answers.first.body
       click_on 'Delete answer'

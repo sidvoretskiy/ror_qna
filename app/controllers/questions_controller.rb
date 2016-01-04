@@ -26,6 +26,8 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
+      response = {question: @question}
+      PrivatePub.publish_to "/questions", response: response
       redirect_to @question, notice: 'Your question successfully created'
     else
       render :new, notice: 'Your question was not created'
@@ -33,16 +35,19 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author_of?(@question)
-      @question = Question.find(params[:id])
-      respond_to do |format|
+    respond_to do |format|
+      if current_user.author_of?(@question)
+        @question = Question.find(params[:id])
+
 
         if @question.update(question_params)
           format.html {redirect_to @question, notice: 'Your question successfully saved'}
           format.json {render json: @question}
         else
-          format.html {render :edit}
+          format.html {render :new}
         end
+      else
+        format.html {render :edit}
       end
     end
   end

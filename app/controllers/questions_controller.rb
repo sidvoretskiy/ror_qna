@@ -8,6 +8,10 @@ class QuestionsController < ApplicationController
 
   def show
     @question = Question.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json  {render json: @question}
+    end
   end
 
   def new
@@ -31,13 +35,15 @@ class QuestionsController < ApplicationController
   def update
     if current_user.author_of?(@question)
       @question = Question.find(params[:id])
-      if @question.update(question_params)
-        redirect_to @question, notice: 'Your question successfully saved'
-      else
-        render :edit
+      respond_to do |format|
+
+        if @question.update(question_params)
+          format.html {redirect_to @question, notice: 'Your question successfully saved'}
+          format.json {render json: @question}
+        else
+          format.html {render :edit}
+        end
       end
-    else
-      render :edit
     end
   end
 

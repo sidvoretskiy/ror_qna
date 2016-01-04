@@ -1,12 +1,21 @@
+- hidden = true
 h1= @question.title
 h2= @question.body
+- if current_user && current_user.author_of?(@question)
+  = form_for (@question), html: {style: "display: #{hidden ? 'none' : 'block'}"}, remote: true, format: :json do |f|
+    div class="field"
+      = f.text_area :body
+    div class="actions"
+      = f.submit ('Сохранить')
+  p = link_to 'Edit question', '#',class: 'edit_question_link'
+
 p.answers-count
   | Answers count:
   = @question.answers.count
 .answers
   = render @question.answers
 .answer-errors
-= form_for [@question, @question.answers.new], remote: true do |f|
+= form_for [@question, @question.answers.new], remote: true, format: :json do |f|
   =   f.label :body, 'Your answer'
   =   f.text_field :body
   =   f.submit 'Send answer'

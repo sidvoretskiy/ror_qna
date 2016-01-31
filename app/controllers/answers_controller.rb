@@ -19,10 +19,14 @@ class AnswersController < ApplicationController
     @answer.user = current_user
     respond_to do |format|
       if @answer.save
+        if @answer.attachments.first
+          attachment_url = @answer.attachments.first.file.url
+          attachment_name = @answer.attachments.first.file.identifier
+        end
         format.html {redirect_to @question, notice: 'Your answer successfully created'}
         format.js
         format.json do
-          response = {answers_count: @question.answers.count, answer: @answer}
+          response = {answers_count: @question.answers.count, answer: @answer, attachment_url: attachment_url, attachment_name: attachment_name}
           PrivatePub.publish_to "/questions/#{@answer.question_id}/answers", response: response
           render json: response
         end
@@ -62,7 +66,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, attachments_attributes: [:file])
   end
 
   def load_answer

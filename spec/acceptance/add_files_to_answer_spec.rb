@@ -6,14 +6,14 @@ feature 'Add files to answer' do
 
   background do
     login(user)
-    visit new_question_path
+    visit question_path(question)
   end
 
-  scenario 'User adds file when answers question' do
+  scenario 'User adds file when answers question', js: true do
     fill_in 'Your answer', with: 'My answer'
     attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
 
-    click_on 'Create'
+    click_on 'Send answer'
 
     within '.answers' do
       expect(page).to have_link "spec_helper.rb"

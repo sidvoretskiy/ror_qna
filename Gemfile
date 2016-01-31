@@ -44,7 +44,8 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-
+  gem 'remotipart'
+  gem 'twitter-bootstrap-rails'
 end
 
 

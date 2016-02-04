@@ -2,6 +2,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_answer, only: [:show, :edit, :update, :destroy]
 
+  authorize_resource
+
   def new
     @answer = Answer.new
   end
@@ -41,23 +43,18 @@ class AnswersController < ApplicationController
   def update
     @answer = Answer.find(params[:id])
     respond_to do |format|
-      if current_user.author_of?(@answer)
         if @answer.update(answer_params)
           format.html {redirect_to @answer.question, notice: 'Your answer successfully changed'}
           format.json {render json: @answer}
         else
           format.html {render :edit}
         end
-      else
-        format.html {render :edit}
-      end
     end
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      # redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted'
+    if @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Your answer successfully deleted'
     else
       redirect_to question_path(@answer.question), notice: 'Answer not deleted'
     end

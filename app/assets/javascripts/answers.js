@@ -22,7 +22,7 @@ $(document).ready(function(){
             console.log(response);
             answer = response.answer;
             $('.answers-count').html('Answers count:'+response.answers_count);
-            
+
             $('input#answer_body').val('');
         }).bind('ajax:error',
         function(e, xhr, status, error){

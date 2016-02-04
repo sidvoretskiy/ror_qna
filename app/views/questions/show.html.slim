@@ -9,16 +9,24 @@
       div class="actions"
         = f.submit ('Сохранить')
     p = link_to 'Edit question', '#',class: 'edit_question_link'
-
+  p Attachments:
+  ul
+    - @question.attachments.each do |a|
+      li= link_to a.file.identifier, a.file.url
   p.answers-count
     | Answers count:
     = @question.answers.count
   .answers
     = render @question.answers
   .answer-errors
-  = form_for [@question, @question.answers.new], remote: true, format: :json do |f|
+  = form_for [@question, @answer], remote: true, format: :json do |f|
     =   f.label :body, 'Your answer'
     =   f.text_field :body
+    p Attachment:
+    p
+      =   f.fields_for :attachments do |a|
+        = a.label :file
+        = a.file_field :file
     =   f.submit 'Send answer'
   - if current_user && current_user.author_of?(@question)
     p = link_to 'Delete', @question, method: :delete

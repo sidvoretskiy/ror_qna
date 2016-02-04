@@ -11,17 +11,10 @@ $(document).ready(function(){
         } else {
             $(this).html('Cancel');
             $(this).addClass('cancel');
-        };
+        }
         form.toggle();
         title.toggle();
     });
-
-
-
-
-
-
-
 
     $('form.new_answer').bind('ajax:success',
         function(e, data, status, xhr){
@@ -55,7 +48,7 @@ $(document).ready(function(){
             } else {
                 $('a.edit_answer_link').html('Cancel');
                 $('a.edit_answer_link').addClass('cancel');
-            };
+            }
 
         }).bind('ajax:error',
         function(e, xhr, status, error){
@@ -69,10 +62,17 @@ $(document).ready(function(){
     PrivatePub.subscribe(channel,function(data,channel){
         console.log(data);
         response = data['response'];
+        attachment_url = response.attachment_url;
+        attachment_name = response.attachment_name;
         answer_count = response.answers_count;
         answer = response.answer;
         $('.answers-count').html('Answers count:'+response.answers_count);
-        $('.answers').append('<div class="answer" id="answer_' + answer.id + '\"><p>' + answer.body + '</p></div>');
+        if (attachment_name != null){
+            $('.answers').append('<div class="answer" id="answer_' + answer.id + '\"><p>' + answer.body + '</p><ul><li><a href="'+ attachment_url +'">'+ attachment_name +'</a></li></ul></div>');
+        } else {
+            $('.answers').append('<div class="answer" id="answer_' + answer.id + '\"><p>' + answer.body + '</p></div>');
+        }
+
 
 
     })

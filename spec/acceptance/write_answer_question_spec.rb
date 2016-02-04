@@ -14,7 +14,7 @@ feature 'Authentificated user can write answer for question' do
     fill_in 'Your answer', with: 'My answer'
     # save_and_open_page
     click_on 'Send answer'
-    # save_and_open_page
+    save_and_open_page
     # expect(page).to have_content 'Your answer successfully created'
     expect(page).to have_content 'My answer'
     expect(current_path).to eq question_path(question)

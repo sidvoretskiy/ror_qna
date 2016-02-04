@@ -27,6 +27,10 @@ gem 'devise'
 gem 'slim-rails'
 gem 'private_pub'
 gem 'thin'
+gem 'carrierwave'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-vk'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -43,7 +47,8 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-
+  gem 'remotipart'
+  gem 'twitter-bootstrap-rails'
 end
 
 

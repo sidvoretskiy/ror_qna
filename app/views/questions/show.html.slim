@@ -2,7 +2,7 @@
   - hidden = true
   h1= @question.title
   h2= @question.body
-  - if current_user && current_user.author_of?(@question)
+  - if can?(:update, @question)
     = form_for (@question), html: {style: "display: #{hidden ? 'none' : 'block'}"}, remote: true, format: :json do |f|
       div class="field"
         = f.text_area :body
@@ -28,7 +28,7 @@
         = a.label :file
         = a.file_field :file
     =   f.submit 'Send answer'
-  - if current_user && current_user.author_of?(@question)
+  - if can?(:destroy, @question)
     p = link_to 'Delete', @question, method: :delete
 
 = subscribe_to "/questions/#{@question.id}/answers"

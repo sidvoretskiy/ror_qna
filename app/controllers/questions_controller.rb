@@ -2,11 +2,15 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :edit, :update, :destroy]
 
+  authorize_resource
+
   def index
+    # authorize! :index, Question
     @questions = Question.all
   end
 
   def show
+    # authorize! :show, @question
     @question = Question.find(params[:id])
     @answer = Answer.new
     @answer.attachments.build
@@ -17,15 +21,18 @@ class QuestionsController < ApplicationController
   end
 
   def new
+    # authorize! :create, Question
     @question = Question.new
     @question.attachments.build
   end
 
   def edit
+    authorize! :update, @question
     @question = Question.find(params[:id])
   end
 
   def create
+    # authorize! :create, Question
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
@@ -38,25 +45,21 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    # authorize! :update, @question
     respond_to do |format|
-      if current_user.author_of?(@question)
-        @question = Question.find(params[:id])
-
-
-        if @question.update(question_params)
-          format.html {redirect_to @question, notice: 'Your question successfully saved'}
-          format.json {render json: @question}
-        else
-          format.html {render :new}
-        end
+      @question = Question.find(params[:id])
+      if @question.update(question_params)
+        format.html {redirect_to @question, notice: 'Your question successfully saved'}
+        format.json {render json: @question}
       else
-        format.html {render :edit}
+        format.html {render :new}
       end
     end
   end
 
   def destroy
-    @question.destroy if current_user.author_of?(@question)
+    # authorize! :destroy, @question
+    @question.destroy
     redirect_to questions_path
   end
 

@@ -5,4 +5,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
     render json: @question.answers
   end
 
+  def show
+    @answer = Answer.find(params[:id])
+    render json: @answer
+  end
 end

@@ -107,12 +107,12 @@ RSpec.describe "Qustions API" do
         end
       end
 
-      context 'attachments' #do
-      #   it 'included in question' do
+      context 'attachments' do
+         it 'included in question' #do
       #     expect(response.body).to have_json_size(1).at_path('question/attachments')
       #   end
       #
-      # end
+      end
 
 
     end

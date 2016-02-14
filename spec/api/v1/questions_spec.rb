@@ -17,7 +17,8 @@ RSpec.describe "Qustions API" do
 
     end
     context 'authorized' do
-      let(:access_token) { create(:access_token)}
+      let(:me) {create(:user)}
+      let(:access_token) {create(:access_token, resource_owner_id: me.id)}
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
       let!(:answer) { create(:answer, question: question) }
@@ -68,7 +69,7 @@ RSpec.describe "Qustions API" do
       end
 
       it 'returns 401 status if access token if invalid' do
-        get '/api/v1/questions', format: :json, access_token: 123456
+        get "/api/v1/questions/#{question.id}", format: :json, access_token: 123456
         expect(response.status).to eq 401
       end
 
@@ -76,7 +77,8 @@ RSpec.describe "Qustions API" do
 
     end
     context 'authorized' do
-      let(:access_token) { create(:access_token)}
+      let(:me) {create(:user)}
+      let(:access_token) {create(:access_token, resource_owner_id: me.id)}
 
 
 

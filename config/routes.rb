@@ -9,9 +9,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :questions
+      resources :questions do
+        resources :answers
+      end
       resources :profiles do
-        # get :me, on: :collection
+        get :me, on: :collection
 
       end
     end

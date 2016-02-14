@@ -52,5 +52,6 @@ class Ability
     # can :update, [Question, Answer], user_id: user.id
     # can :destroy, [Question, Answer], user_id: user.id
     can :manage, [Question, Answer], user_id: user.id
+    can :me, User, id: user.id
   end
 end

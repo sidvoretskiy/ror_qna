@@ -32,6 +32,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-vk'
 gem 'cancancan'
+gem 'doorkeeper'
+gem 'active_model_serializers'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -50,6 +52,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'remotipart'
   gem 'twitter-bootstrap-rails'
+  gem 'json_spec'
 end
 
 

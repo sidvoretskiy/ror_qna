@@ -26,6 +26,7 @@ FactoryGirl.define do
         create_list(:answer, evaluator.answers_count, question: question)
       end
     end
+
   end
 
   factory :invalid_question, class: 'Question' do
